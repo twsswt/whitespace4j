@@ -1,33 +1,34 @@
 package uk.ac.stand.dcs.ws_int.arithmetic;
 
+import static uk.ac.stand.dcs.ws_int.FiniteStateMachine.getFiniteStateMachine;
+
 import java.util.Stack;
 
 import uk.ac.stand.dcs.ws_int.InterpretWSException;
 import uk.ac.stand.dcs.ws_int.Program;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
-public class Arithmetic_TA_State extends BasicState{
+public class ArithmeticTabState extends BasicState{
 
 	private static final char division = '/';
 	private static final char modulo = '%';
 	
-	public static String NAME = "Arithmetic_TA";
 	private Stack<Long> stack;
 	
-	public Arithmetic_TA_State(Program p, boolean scan_mode, char[] chars, Stack<Long> stack) {
-		super(p, scan_mode, chars,NAME);
+	public ArithmeticTabState(Program program, Character[] chars, Stack<Long> stack) {
+		super(program, chars);
 		this.stack = stack;
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
-		if (scan_mode) return;
+	protected void doSpaceAction() throws InterpretWSException {
+		if (getFiniteStateMachine().isInScanMode()) return;
 		doOperation(division);
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException {
-		if (scan_mode) return;
+	protected void doTabAction() throws InterpretWSException {
+		if (getFiniteStateMachine().isInScanMode()) return;
 		doOperation(modulo);
 	}
 	
@@ -38,7 +39,7 @@ public class Arithmetic_TA_State extends BasicState{
 		switch (op) {
 			case division: stack.push(e2/e1);
 			case modulo:  stack.push(e2%e1);
-			default: throw new InterpretWSException(p,NAME);
+			default: throw new InterpretWSException(program, this);
 		}
 	}
 
