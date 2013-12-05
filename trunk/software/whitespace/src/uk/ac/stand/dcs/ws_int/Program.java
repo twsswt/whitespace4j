@@ -1,18 +1,10 @@
 package uk.ac.stand.dcs.ws_int;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-
 
 public class Program {
 	
 	protected static final Logger logger = Logger.getLogger(Program.class);
-	{
-		//initialise logging.
-		PropertyConfigurator.configure("log4j.properties");
-		logger.setLevel(Level.DEBUG);
-	}
 		
 	private String source;
 	

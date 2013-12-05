@@ -10,7 +10,6 @@ import uk.ac.stand.dcs.ws_int.State;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class StackState extends BasicState{
-
 	
 	private Stack<Long> stack;
 	

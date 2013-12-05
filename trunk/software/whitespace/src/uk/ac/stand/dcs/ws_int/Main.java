@@ -6,19 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 public class Main {
 	
 	protected static final Logger logger = Logger.getLogger(Main.class);
-	{
-		PropertyConfigurator.configure("log4j.properties");
-		logger.setLevel(Level.INFO);
-	}
 	
 	public static void main (String[] args){
+		
+		PropertyConfigurator.configure("log4j.properties");
 		
 		try {
 			//Character[] chars = new Character[]{'\t',' ','\n'};

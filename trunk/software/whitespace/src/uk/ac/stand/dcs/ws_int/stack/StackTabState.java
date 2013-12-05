@@ -9,8 +9,6 @@ import uk.ac.stand.dcs.ws_int.Program;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class StackTabState extends BasicState{
-
-	public static String NAME = "Stack_TA";
 	
 	private Stack<Long> stack;
 	

@@ -1,14 +1,10 @@
 package uk.ac.stand.dcs.ws_int;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 public abstract class State {
 	
 	public static final Logger logger = Logger.getLogger(State.class);
-	{
-		PropertyConfigurator.configure("log4j.properties");
-	}
 	
 	protected Character tab;
 	protected Character space;

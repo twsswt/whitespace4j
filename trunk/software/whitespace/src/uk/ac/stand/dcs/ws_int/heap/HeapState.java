@@ -9,9 +9,7 @@ import uk.ac.stand.dcs.ws_int.Program;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class HeapState extends BasicState {
-	
-	public static String NAME = "HEAP";
-	
+		
 	private Stack<Long> stack;
 
 	private Heap heap;
