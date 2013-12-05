@@ -21,9 +21,8 @@ public class Main {
 	public static void main (String[] args){
 		
 		try {
-			//char[] chars = new char[]{'\t',' ','\n'};
-			System.out.println("here");
-			char[] chars = new char[]{'T', 'W', 'N'};
+			//Character[] chars = new Character[]{'\t',' ','\n'};
+			Character[] chars = new Character[]{'T', 'W', 'N'};
 			
 			BufferedReader buf = new BufferedReader(
 					new InputStreamReader(
@@ -32,6 +31,7 @@ public class Main {
 			while (buf.ready()){
 				program+=(char)buf.read();
 			}
+			buf.close();
 			new Interpreter(program, chars);
 			
 		} catch (FileNotFoundException e) {

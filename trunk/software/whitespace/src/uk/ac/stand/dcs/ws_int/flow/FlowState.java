@@ -6,37 +6,35 @@ import uk.ac.stand.dcs.ws_int.State;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class FlowState extends BasicState {
-
-	public static String NAME = "Flow";
 	
-	private State flow_lf;
-	private State flow_sp;
-	private State flow_ta;
+	private State flowLineFeed;
+	private State flowSpace;
+	private State flowTab;
 	
-	public FlowState(Program p, boolean scan_mode, char[] chars, State flow_lf, State flow_sp, State flow_ta) {
-		super(p, scan_mode, chars, NAME);	
-		this.flow_lf = flow_lf;
-		this.flow_sp = flow_sp;
-		this.flow_ta = flow_ta;
+	public FlowState(Program program, Character[] chars, State flowLineFeed, State flowSpace, State flowTab) {
+		super(program, chars);	
+		this.flowLineFeed = flowLineFeed;
+		this.flowSpace = flowSpace;
+		this.flowTab = flowTab;
 
 	}
 
 	@Override
-	protected void doActionLF() throws InterpretWSException {
+	protected void doLineFeedAction() throws InterpretWSException {
 		//logger.debug(name+": doing LF action.");
-		flow_lf.execute();
+		flowLineFeed.execute();
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
+	protected void doSpaceAction() throws InterpretWSException {
 		//logger.debug(name+": doing SP action.");
-		flow_sp.execute();
+		flowSpace.execute();
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException {
+	protected void doTabAction() throws InterpretWSException {
 		//logger.debug(name+": doing TA action.");
-		flow_ta.execute();
+		flowTab.execute();
 	}
 
 }

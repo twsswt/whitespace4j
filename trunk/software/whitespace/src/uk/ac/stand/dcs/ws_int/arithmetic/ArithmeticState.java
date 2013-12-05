@@ -9,23 +9,23 @@ public class ArithmeticState extends BasicState {
 
 	public static String NAME = "ARITHMETIC";
 	
-	private State arithmetic_sp;
-	private State arithmetic_ta;
+	private State arithmeticSpace;
+	private State arithmeticTab;
 	
-	public ArithmeticState(Program p, boolean scan_mode, char[] chars,State arithmetic_sp, State arithmetic_ta) {
-		super(p, scan_mode, chars, NAME);
-		this.arithmetic_sp = arithmetic_sp;
-		this.arithmetic_ta = arithmetic_ta;
+	public ArithmeticState(Program program, Character[] chars, State arithmeticSpace, State arithmeticTab) {
+		super(program, chars);
+		this.arithmeticSpace = arithmeticSpace;
+		this.arithmeticTab = arithmeticTab;
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
-		arithmetic_sp.execute();
+	protected void doSpaceAction() throws InterpretWSException {
+		arithmeticSpace.execute();
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException {
-		arithmetic_ta.execute();
+	protected void doTabAction() throws InterpretWSException {
+		arithmeticTab.execute();
 	}
 
 }

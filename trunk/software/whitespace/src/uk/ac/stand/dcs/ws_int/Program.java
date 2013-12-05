@@ -1,12 +1,9 @@
 package uk.ac.stand.dcs.ws_int;
 
-import java.util.Stack;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import uk.ac.stand.dcs.ws_int.flow.ProgramScanner;
 
 public class Program {
 	
@@ -14,50 +11,34 @@ public class Program {
 	{
 		//initialise logging.
 		PropertyConfigurator.configure("log4j.properties");
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 	}
-	
-	/** stack of return points for sub routine calls */
-	private Stack<Long> s_routines = new Stack<Long>();
-	
+		
 	private String source;
 	
 	private long counter;
-
-	private char[] chars;
 	
-	public Program (String source, char[] chars){
+	public Program (String source){
 		this.source = source;
-		this.chars = chars;
 	}
 	
 	public long getCounter(){
 		return counter;
 	}
 	
-	public void callSubRoutine(Long label){
-		this.s_routines.push(counter);
-		jump(label);
+	public void jump(Long position){
+		logger.debug("Jump request to position: "+position+" from position "+ counter +".");
+		counter = position;
 	}
 	
-	public void jump(Long label){
-		ProgramScanner ps = new ProgramScanner(source, chars);
-		logger.debug("Jump request to label: "+label+" at position "+counter+".");
-		counter = ps.getLabels().get(label);
-		logger.debug("Jumping to position: "+counter);
+	public Character getNextToken (){
+		if (counter < source.length())
+			return source.charAt((int)counter++);
+		else
+			return null;
 	}
 	
-	public void returnSubRoutine(){
-		Long i = s_routines.pop();
-		logger.debug("Program:Returning from sub-routine to position: "+i+".");
-		counter = i;
-	}
-	
-	public char getNextToken (){
-		return source.charAt((int)counter++);
-	}
-	
-	public char getCurrentToken(){
+	public Character getCurrentToken(){
 		return source.charAt((int)counter);
 	}
 	
@@ -66,7 +47,14 @@ public class Program {
 	}
 
 	public void setSource(String source) {
-		this.source = source;
-		
+		this.source = source;		
+	}
+	
+	public Boolean isAtEnd(){
+		return getCounter() == source.length();
+	}
+	
+	public void reset(){
+		counter = 0;
 	}
 }

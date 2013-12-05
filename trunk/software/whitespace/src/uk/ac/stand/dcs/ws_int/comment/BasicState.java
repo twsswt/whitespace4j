@@ -14,25 +14,25 @@ public class BasicState extends State {
 	{
 		//initialise logging.
 		PropertyConfigurator.configure("log4j.properties");
-		blogger.setLevel(Level.INFO);
+		blogger.setLevel(Level.DEBUG);
 	}
 	
-	public BasicState(Program p, boolean scan_mode, char[] chars, String name) {
-		super(p, scan_mode,chars, name);
+	public BasicState(Program program, Character[] chars) {
+		super(program,chars);
 	}
 
 	@Override
-	protected void doActionLF() throws InterpretWSException {
-		throw new InterpretWSException(p,getName());
+	protected void doLineFeedAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
-		throw new InterpretWSException(p,getName());	
+	protected void doSpaceAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);	
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException {
-		throw new InterpretWSException(p,getName());
+	protected void doTabAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);
 	}
 }

@@ -1,46 +1,56 @@
 package uk.ac.stand.dcs.ws_int;
 
-import java.util.Stack;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-
-import uk.ac.stand.dcs.ws_int.factory.FiniteStateMachineFactory;
-import uk.ac.stand.dcs.ws_int.heap.Heap;
 
 public class Interpreter   {
 	
 	protected static final Logger logger = Logger.getLogger(Interpreter.class);
 	{
 		PropertyConfigurator.configure("log4j.properties");
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 	}
 	
 	/** Program to be intrepreted */
-	private Program p;
-	
-	/** Shared runtime stack */
-	private Stack<Long> stack = new Stack<Long>();
-	
-	/** Shared heap */
-	private Heap heap = new Heap();
-	
-	private State imf_s;
-	
-	private boolean halt = false;
-	
-	public Interpreter (String program, char[] chars){
-		p = new Program(program,chars);
+	private Program program;
 		
-		imf_s = FiniteStateMachineFactory.getFiniteStateMachine(p, stack, heap,System.in, System.out, this, null, chars, false);
+	private Boolean halt = false;
+	
+	public Interpreter (String source, Character[] chars){
+		this.program = new Program(source);
+		
+		
+		FiniteStateMachine machine = FiniteStateMachine.getFiniteStateMachine();
+		machine.setInputStream(System.in);
+		machine.setOutputStream(System.out);
+		machine.initialise(program, this, chars);
+		
+		machine.setInScanMode(true);
+		
+		State imfState = machine.getImfState(); 
+		
+		logger.debug("Beginning scan of labels.");
+		
+		while (!program.isAtEnd()){
+			try {
+				imfState.execute();
+			} catch (InterpretWSException e) {
+				logger.fatal("Interpretation error at position "+ program.getCounter() +".", e);
+			}
+		}
+		
+		logger.debug("Completed scan of labels");
+
+		machine.setInScanMode(false);
+		program.reset();
 		
 		while(!halt)
 			try {
-				logger.debug("Beginning new instruction at position. "+p.getCounter());
-				imf_s.execute();
+				logger.debug("Beginning new instruction at position. "+program.getCounter());
+				imfState.execute();
 			} catch (InterpretWSException e) {
-				logger.fatal("Interpretation error at position "+p.getCounter()+".", e);
+				logger.fatal("Interpretation error at position "+program.getCounter()+".", e);
 			}		
 	}
 	

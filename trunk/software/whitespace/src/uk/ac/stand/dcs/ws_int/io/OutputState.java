@@ -1,45 +1,52 @@
 package uk.ac.stand.dcs.ws_int.io;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
+import static uk.ac.stand.dcs.ws_int.FiniteStateMachine.getFiniteStateMachine;
+
 import java.util.Stack;
 
+import uk.ac.stand.dcs.ws_int.FiniteStateMachine;
 import uk.ac.stand.dcs.ws_int.InterpretWSException;
 import uk.ac.stand.dcs.ws_int.Program;
 import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class OutputState extends BasicState {
-
-	public static String NAME = "IO_SP";
 	
-	private PrintStream ps;
-
 	private Stack<Long> stack;
 	
-	public OutputState(Program p, boolean scan_mode, char[] chars, OutputStream os, Stack<Long> stack) {
-		super(p, scan_mode, chars, NAME);
-		if (scan_mode) return;
-		this.ps = new PrintStream(os);
+	public OutputState(Program program, Character[] chars, Stack<Long> stack) {
+		super(program, chars);
 		this.stack = stack;
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
-		if (scan_mode) return;
-		logger.debug(name+":Outputing \'"+stack.peek().intValue()+"\'");
-		ps.write((char)stack.pop().intValue());
-		ps.flush();
+	protected void doSpaceAction() throws InterpretWSException {
+		
+		FiniteStateMachine machine = 
+				getFiniteStateMachine();
+		
+		if (machine.isInScanMode()) return;
+		
+		logger.debug("Outputing value ["+stack.peek().intValue()+"] on top of stack "+stack+".");
+		
+		machine.getPrintWriter().write((char)stack.pop().intValue());
+		machine.getPrintWriter().flush();
 
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException {
-		if (scan_mode) return;
-		logger.debug(name+":"+stack);
+	protected void doTabAction() throws InterpretWSException {
+		
+		FiniteStateMachine machine = 
+				getFiniteStateMachine();
+		
+		if (machine.isInScanMode()) return;
+
 		Long value = stack.pop();
-		logger.debug(name+":Outputing \'"+value+"\'");
-		ps.print(value);
-		ps.flush();
+
+		logger.debug(":Outputing value ["+value+"] popped from stack "+stack+".");
+		
+		machine.getPrintWriter().print(value);
+		machine.getPrintWriter().flush();
 	}
 
 }

@@ -7,17 +7,15 @@ import uk.ac.stand.dcs.ws_int.comment.BasicState;
 
 public class IMFState extends BasicState {
 	
-	private State stack_s;
-	private State flow_s;
-	private State imf_ta;
+	private State stackState;
+	private State flowState;
+	private State imfTab;
 	
-	public static String NAME = "IMF";
-
-	public IMFState(Program p, boolean scan_mode, char[] chars, State stack_s, State flow_s, State imf_ta){
-		super(p, scan_mode, chars, NAME);
-		this.stack_s = stack_s;
-		this.flow_s = flow_s;
-		this.imf_ta = imf_ta;
+	public IMFState(Program program, Character[] chars, State stackState, State flowState, State imfTab){
+		super(program, chars);
+		this.stackState = stackState;
+		this.flowState = flowState;
+		this.imfTab = imfTab;
 	}
 
 	public void execute() throws InterpretWSException{
@@ -27,21 +25,20 @@ public class IMFState extends BasicState {
 	}
 	
 	@Override
-	protected void doActionLF() throws InterpretWSException{
+	protected void doLineFeedAction() throws InterpretWSException{
 		logger.debug("Instruction modification: Flow");
-		flow_s.execute();
+		flowState.execute();
 	}
 
 	@Override
-	protected void doActionSP() throws InterpretWSException {
+	protected void doSpaceAction() throws InterpretWSException {
 		logger.debug("Instruction modification: Stack");
-		stack_s.execute();
+		stackState.execute();
 	}
 
 	@Override
-	protected void doActionTA() throws InterpretWSException{
-		imf_ta.execute();
-
+	protected void doTabAction() throws InterpretWSException{
+		imfTab.execute();
 	}
 
 }

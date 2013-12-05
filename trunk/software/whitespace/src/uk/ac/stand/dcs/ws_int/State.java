@@ -1,6 +1,5 @@
 package uk.ac.stand.dcs.ws_int;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -9,40 +8,35 @@ public abstract class State {
 	public static final Logger logger = Logger.getLogger(State.class);
 	{
 		PropertyConfigurator.configure("log4j.properties");
-		logger.setLevel(Level.INFO);
 	}
 	
-	protected char ta;
-	protected char sp;
-	protected char lf; 
+	protected Character tab;
+	protected Character space;
+	protected Character lineFeed; 
 	
-	protected Program p;
-	protected String name;
-	protected boolean scan_mode;
+	protected Program program;
 	
 	public static String currentIns = "";
 	
-	public State (Program p, boolean scan_mode, char[] chars,String name){
-		this.p = p;
-		this.scan_mode = scan_mode;
-		this.name = name;
-		ta = chars[0];
-		sp = chars[1];
-		lf = chars[2];
+	public State (Program program, Character[] chars){
+		this.program = program;
+		tab = chars[0];
+		space = chars[1];
+		lineFeed = chars[2];
 	}
 	
 	public void execute () throws InterpretWSException{
-		char ins = this.getNextProgramToken();
+		Character ins = this.getNextProgramToken();
 		currentIns+=ins;
-		//logger.debug(currentIns);
 		
-		if (ins==sp){
-			 doActionSP();
-		}else if (ins==ta){
-			doActionTA();
-		}else if (ins==lf){
-			doActionLF();
-		} else throw new InterpretWSException(p,name);			
+		Boolean scanMode = FiniteStateMachine.getFiniteStateMachine().isInScanMode();
+		
+		if (ins==space) doSpaceAction();
+		else if (ins==tab) doTabAction();
+		else if (ins==lineFeed) doLineFeedAction();
+		else if (ins==null && scanMode) return;
+		else
+			throw new InterpretWSException(program, this);			
 	}
 	
 	protected long interpretSignedNumber() throws InterpretWSException{
@@ -61,38 +55,35 @@ public abstract class State {
 		if (signed){
 			char sign = getNextProgramToken();
 			currentIns+=sign;
-			if (sign==ta) sign_mult = -1;
-			else if (sign==sp) sign_mult = 1;
-			else throw new InterpretWSException(p,"number(sign)");		
+			if (sign==tab) sign_mult = -1;
+			else if (sign==space) sign_mult = 1;
+			else throw new InterpretWSException(program, this);		
 		}
 		
-		char c = getNextProgramToken();
-		while(c != lf){
+		Character c = getNextProgramToken();
+		while(c != lineFeed){
 			currentIns+=c;
 			result *=2;
-			if (c==ta) result++;
-			else if (c==sp);
-			else throw new InterpretWSException(p,"number(value)");
+			if (c==tab) result++;
+			else if (c==space);
+			else throw new InterpretWSException(program, this);
 			c = getNextProgramToken();
 		}
 		return result*sign_mult;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	private char getNextProgramToken(){
-		char ins = p.getNextToken();
+	private Character getNextProgramToken(){
+		Character ins = program.getNextToken();
 		
-		while(!(ins==ta || ins==lf || ins==sp))
-			ins = p.getNextToken();
+		while(!(ins==tab || ins==lineFeed || ins==space || ins==null))
+			ins = program.getNextToken();
+		
 		return ins;
 	}
 	
-	protected abstract void doActionSP() throws InterpretWSException;
+	protected abstract void doSpaceAction() throws InterpretWSException;
 	
-	protected abstract void doActionTA() throws InterpretWSException;
+	protected abstract void doTabAction() throws InterpretWSException;
 	
-	protected abstract void doActionLF() throws InterpretWSException;
+	protected abstract void doLineFeedAction() throws InterpretWSException;
 }
