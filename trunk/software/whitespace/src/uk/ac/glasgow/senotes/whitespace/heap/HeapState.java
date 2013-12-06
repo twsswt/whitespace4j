@@ -2,20 +2,22 @@ package uk.ac.glasgow.senotes.whitespace.heap;
 
 import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteStateMachine;
 
+import java.util.Map;
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
+import uk.ac.glasgow.senotes.whitespace.State;
 
-public class HeapState extends BasicState {
+public class HeapState extends State {
 		
 	private Stack<Long> stack;
 
-	private Heap heap;
+	private Map<Long,Long> heap;
 
-	public HeapState(Program program, Character[] chars, Stack<Long> stack, Heap heap) {
-		super(program, chars);
+	public HeapState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack, Map<Long,Long> heap) {
+		super(program, characterSet);
 		this.stack = stack;
 		this.heap = heap;
 	}
@@ -28,9 +30,9 @@ public class HeapState extends BasicState {
 		Long value = stack.pop();
 		Long key = stack.pop();
 
-		logger.debug("sSoring ["+value+"] at ["+key+"]. on heap "+heap+".");
+		logger.debug("Storing ["+value+"] at ["+key+"]. on heap "+heap+".");
 		
-		heap.store(value,key);
+		heap.put(key, value);
 	}
 
 	@Override
@@ -42,6 +44,6 @@ public class HeapState extends BasicState {
 		
 		logger.debug("retrieving value at key ["+key+"] from heap ["+heap+"].");
 		
-		stack.push(heap.retrieve(key));
+		stack.push(heap.get(key));
 	}
 }

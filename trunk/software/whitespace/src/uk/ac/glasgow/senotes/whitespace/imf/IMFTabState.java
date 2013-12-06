@@ -1,24 +1,24 @@
 package uk.ac.glasgow.senotes.whitespace.imf;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
 
-public class IMFTabState extends BasicState {
+public class IMFTabState extends State {
 
 	private State arithmeticState;
 	private State ioState;
 	private State heapState;
 		
 	public IMFTabState(
-		Program program,
-		Character[] chars,
+		WhiteSpaceProgram program,
+		CharacterSet characterSet,
 		State arithmeticState,
 		State ioState,
 		State heapState) {
 		
-		super(program ,chars);
+		super(program ,characterSet);
 		this.arithmeticState = arithmeticState;
 		this.ioState = ioState;
 		this.heapState = heapState;

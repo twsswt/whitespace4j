@@ -3,21 +3,22 @@ package uk.ac.glasgow.senotes.whitespace.io;
 import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteStateMachine;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.FiniteStateMachine;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
-import uk.ac.glasgow.senotes.whitespace.heap.Heap;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
+import uk.ac.glasgow.senotes.whitespace.State;
 
-public class InputState extends BasicState{
+public class InputState extends State{
 	
 	private Stack<Long> stack;
-	private Heap heap;
+	private Map<Long,Long> heap;
 		
-	public InputState(Program program, Character[] chars, Stack<Long> stack, Heap heap) {
-		super(program, chars);
+	public InputState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack, Map<Long,Long> heap) {
+		super(program, characterSet);
 		this.stack = stack;
 		this.heap = heap;
 	}
@@ -31,7 +32,7 @@ public class InputState extends BasicState{
 		try {
 			if(machine.isInScanMode())return;
 			char input = (char)machine.getBufferedReader().read();
-			heap.store((long)input, stack.peek());
+			heap.put((long)input, stack.peek());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
@@ -46,7 +47,7 @@ public class InputState extends BasicState{
 		try {
 			if(machine.isInScanMode())return;
 			Long input = Long.parseLong(machine.getBufferedReader().readLine());
-			heap.store(input, stack.peek());
+			heap.put(input, stack.peek());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

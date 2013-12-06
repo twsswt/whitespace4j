@@ -1,17 +1,17 @@
 package uk.ac.glasgow.senotes.whitespace.io;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
 
-public class IOState extends BasicState {
+public class IOState extends State {
 	
 	private State input;
 	private State output;
 	
-	public IOState(Program program, Character[] chars, State input, State output) {
-		super(program, chars);
+	public IOState(WhiteSpaceProgram program, CharacterSet characterSet, State input, State output) {
+		super(program, characterSet);
 		this.input = input;
 		this.output = output;
 	}

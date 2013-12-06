@@ -4,19 +4,20 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.State;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 
-public class ArithmeticTabState extends BasicState{
+public class ArithmeticTabState extends State{
 
 	private static final char division = '/';
 	private static final char modulo = '%';
 	
 	private Stack<Long> stack;
 	
-	public ArithmeticTabState(Program program, Character[] chars, Stack<Long> stack) {
-		super(program, chars);
+	public ArithmeticTabState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack) {
+		super(program, characterSet);
 		this.stack = stack;
 	}
 

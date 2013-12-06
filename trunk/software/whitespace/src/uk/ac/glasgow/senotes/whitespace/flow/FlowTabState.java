@@ -5,11 +5,12 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 import java.util.Map;
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.State;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 
-public class FlowTabState extends BasicState{
+public class FlowTabState extends State{
 	
 	private Stack<Long> stack;
 
@@ -18,13 +19,13 @@ public class FlowTabState extends BasicState{
 	private Stack<Long> subRoutines;
 	
 	public FlowTabState(
-		Program program,
-		Character[] chars,
+		WhiteSpaceProgram program,
+		CharacterSet characterSet,
 		Stack<Long> stack,
 		Map<Long,Long> labels,
 		Stack<Long> subRoutines) {
 		
-		super(program, chars);
+		super(program, characterSet);
 		
 		this.stack = stack;
 		this.labels = labels;

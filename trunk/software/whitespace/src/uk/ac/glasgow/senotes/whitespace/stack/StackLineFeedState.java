@@ -3,16 +3,17 @@ package uk.ac.glasgow.senotes.whitespace.stack;
 import java.util.Stack;
 
 import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteStateMachine;
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
+import uk.ac.glasgow.senotes.whitespace.State;
 
-public class StackLineFeedState extends BasicState {
+public class StackLineFeedState extends State {
 	
 	private Stack<Long> stack;
 	
-	public StackLineFeedState(Program program, Character[] chars, Stack<Long> stack) {
-		super(program, chars);
+	public StackLineFeedState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack) {
+		super(program, characterSet);
 		this.stack = stack;
 	}
 
@@ -26,8 +27,12 @@ public class StackLineFeedState extends BasicState {
 	@Override
 	protected void doSpaceAction() throws InterpretWSException {
 		if (getFiniteStateMachine().isInScanMode()) return;
-		logger.debug("Copying top stack element"+stack+".");
-		stack.push(new Long(stack.peek()));
+		logger.debug("Copying top stack element "+stack+".");
+		stack.push(
+				new Long(
+						stack.peek()
+						));
+		logger.debug("Copied top stack element "+stack+".");
 	}
 
 	@Override

@@ -4,20 +4,24 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 
 import java.util.Stack;
 
-import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import org.apache.log4j.Logger;
 
-public class StackState extends BasicState{
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
+import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
+import uk.ac.glasgow.senotes.whitespace.State;
+
+public class StackState extends State{
+	
+	private static final Logger logger = Logger.getLogger(StackState.class);
 	
 	private Stack<Long> stack;
 	
 	private State stack_ta;
 	private State stack_lf;
 	
-	public StackState(Program p, Character[] chars, Stack<Long> stack, State stack_lf, State stack_ta) {
-		super(p, chars);
+	public StackState(WhiteSpaceProgram p, CharacterSet characterSet, Stack<Long> stack, State stack_lf, State stack_ta) {
+		super(p, characterSet);
 		this.stack = stack;
 		this.stack_ta = stack_ta;
 		this.stack_lf = stack_lf;

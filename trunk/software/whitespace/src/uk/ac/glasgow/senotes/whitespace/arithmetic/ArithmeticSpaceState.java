@@ -4,11 +4,12 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.State;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 
-public class ArithmeticSpaceState extends BasicState{
+public class ArithmeticSpaceState extends State{
 	
 	private Stack<Long> stack;
 	
@@ -16,8 +17,8 @@ public class ArithmeticSpaceState extends BasicState{
 	private static final char SUBTRACTION = '-';
 	private static final char MULTIPLICATION = '*';
 	
-	public ArithmeticSpaceState(Program program, Character[] chars, Stack<Long> stack) {
-		super(program, chars);
+	public ArithmeticSpaceState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack) {
+		super(program, characterSet);
 		this.stack = stack;
 	}
 

@@ -1,19 +1,19 @@
 package uk.ac.glasgow.senotes.whitespace.arithmetic;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
 
-public class ArithmeticState extends BasicState {
+public class ArithmeticState extends State {
 
 	public static String NAME = "ARITHMETIC";
 	
 	private State arithmeticSpace;
 	private State arithmeticTab;
 	
-	public ArithmeticState(Program program, Character[] chars, State arithmeticSpace, State arithmeticTab) {
-		super(program, chars);
+	public ArithmeticState(WhiteSpaceProgram program, CharacterSet characterSet, State arithmeticSpace, State arithmeticTab) {
+		super(program, characterSet);
 		this.arithmeticSpace = arithmeticSpace;
 		this.arithmeticTab = arithmeticTab;
 	}

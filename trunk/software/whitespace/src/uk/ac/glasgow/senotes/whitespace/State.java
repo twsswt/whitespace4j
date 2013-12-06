@@ -4,33 +4,38 @@ import org.apache.log4j.Logger;
 
 public abstract class State {
 	
-	public static final Logger logger = Logger.getLogger(State.class);
+	protected static final Logger logger = Logger.getLogger(State.class);
 	
-	protected Character tab;
-	protected Character space;
-	protected Character lineFeed; 
+	private Character tab;
+	private Character space;
+	private Character lineFeed; 
 	
-	protected Program program;
+	protected WhiteSpaceProgram program;
 	
-	public static String currentIns = "";
+	private FiniteStateMachine finiteStateMachine;
 	
-	public State (Program program, Character[] chars){
+	public State (WhiteSpaceProgram program, CharacterSet characterSet){
 		this.program = program;
-		tab = chars[0];
-		space = chars[1];
-		lineFeed = chars[2];
+		tab = characterSet.getTab();
+		space = characterSet.getSpace();
+		lineFeed = characterSet.getLineFeed();
+		
+		finiteStateMachine =
+			FiniteStateMachine.getFiniteStateMachine();
 	}
 	
 	public void execute () throws InterpretWSException{
-		Character ins = this.getNextProgramToken();
-		currentIns+=ins;
+		Character token = this.getNextProgramToken();
+			
+		finiteStateMachine.addTokenToCurrentInstruction(token);
 		
-		Boolean scanMode = FiniteStateMachine.getFiniteStateMachine().isInScanMode();
+		Boolean scanMode = 
+			finiteStateMachine.isInScanMode();
 		
-		if (ins==space) doSpaceAction();
-		else if (ins==tab) doTabAction();
-		else if (ins==lineFeed) doLineFeedAction();
-		else if (ins==null && scanMode) return;
+		if (token==space) doSpaceAction();
+		else if (token==tab) doTabAction();
+		else if (token==lineFeed) doLineFeedAction();
+		else if (token==null && scanMode) return;
 		else
 			throw new InterpretWSException(program, this);			
 	}
@@ -44,13 +49,14 @@ public abstract class State {
 	}	
 	
 	protected long interpretNumber(boolean signed) throws InterpretWSException{
-		currentIns+=":";
+		
+		finiteStateMachine.addTokenToCurrentInstruction(':');
 		long result = 0;
 		int sign_mult = 1;
 		
 		if (signed){
-			char sign = getNextProgramToken();
-			currentIns+=sign;
+			Character sign = getNextProgramToken();
+			finiteStateMachine.addTokenToCurrentInstruction(sign);
 			if (sign==tab) sign_mult = -1;
 			else if (sign==space) sign_mult = 1;
 			else throw new InterpretWSException(program, this);		
@@ -58,7 +64,7 @@ public abstract class State {
 		
 		Character c = getNextProgramToken();
 		while(c != lineFeed){
-			currentIns+=c;
+			finiteStateMachine.addTokenToCurrentInstruction(c);
 			result *=2;
 			if (c==tab) result++;
 			else if (c==space);
@@ -69,17 +75,23 @@ public abstract class State {
 	}
 	
 	private Character getNextProgramToken(){
-		Character ins = program.getNextToken();
+		Character token = program.getNextToken();
 		
-		while(!(ins==tab || ins==lineFeed || ins==space || ins==null))
-			ins = program.getNextToken();
+		while(!(token==tab || token==lineFeed || token==space || token==null))
+			token = program.getNextToken();
 		
-		return ins;
+		return token;
 	}
 	
-	protected abstract void doSpaceAction() throws InterpretWSException;
-	
-	protected abstract void doTabAction() throws InterpretWSException;
-	
-	protected abstract void doLineFeedAction() throws InterpretWSException;
+	protected void doLineFeedAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);
+	}
+
+	protected void doSpaceAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);	
+	}
+
+	protected void doTabAction() throws InterpretWSException {
+		throw new InterpretWSException(program, this);
+	}
 }

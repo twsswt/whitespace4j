@@ -1,26 +1,35 @@
 package uk.ac.glasgow.senotes.whitespace.imf;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
+import uk.ac.glasgow.senotes.whitespace.FiniteStateMachine;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
 
-public class IMFState extends BasicState {
+public class IMFState extends State {
 	
 	private State stackState;
 	private State flowState;
 	private State imfTab;
 	
-	public IMFState(Program program, Character[] chars, State stackState, State flowState, State imfTab){
-		super(program, chars);
+	public IMFState(
+		WhiteSpaceProgram program,
+		CharacterSet characterSet,
+		State stackState,
+		State flowState,
+		State imfTab){
+		
+		super(program, characterSet);
 		this.stackState = stackState;
 		this.flowState = flowState;
 		this.imfTab = imfTab;
 	}
 
 	public void execute() throws InterpretWSException{
-		currentIns = "";
-		//logger.debug("reseting instruction");
+		FiniteStateMachine finiteStateMachine =
+			FiniteStateMachine.getFiniteStateMachine();
+
+		finiteStateMachine.resetCurrentInstruction();
 		super.execute();
 	}
 	

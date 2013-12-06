@@ -4,16 +4,17 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 
 import java.util.Stack;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.State;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 
-public class StackTabState extends BasicState{
+public class StackTabState extends State{
 	
 	private Stack<Long> stack;
 	
-	public StackTabState(Program program, Character[] chars, Stack<Long> stack) {
-		super(program, chars);
+	public StackTabState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack) {
+		super(program, characterSet);
 		this.stack = stack;
 	}
 

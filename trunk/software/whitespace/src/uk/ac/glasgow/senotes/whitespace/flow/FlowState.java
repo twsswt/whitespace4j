@@ -1,18 +1,18 @@
 package uk.ac.glasgow.senotes.whitespace.flow;
 
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 import uk.ac.glasgow.senotes.whitespace.State;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
 
-public class FlowState extends BasicState {
+public class FlowState extends State {
 	
 	private State flowLineFeed;
 	private State flowSpace;
 	private State flowTab;
 	
-	public FlowState(Program program, Character[] chars, State flowLineFeed, State flowSpace, State flowTab) {
-		super(program, chars);	
+	public FlowState(WhiteSpaceProgram program, CharacterSet characterSet, State flowLineFeed, State flowSpace, State flowTab) {
+		super(program, characterSet);	
 		this.flowLineFeed = flowLineFeed;
 		this.flowSpace = flowSpace;
 		this.flowTab = flowTab;

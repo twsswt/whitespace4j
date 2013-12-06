@@ -4,17 +4,23 @@ import static uk.ac.glasgow.senotes.whitespace.FiniteStateMachine.getFiniteState
 
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.glasgow.senotes.whitespace.CharacterSet;
 import uk.ac.glasgow.senotes.whitespace.FiniteStateMachine;
 import uk.ac.glasgow.senotes.whitespace.InterpretWSException;
-import uk.ac.glasgow.senotes.whitespace.Program;
-import uk.ac.glasgow.senotes.whitespace.comment.BasicState;
+import uk.ac.glasgow.senotes.whitespace.State;
+import uk.ac.glasgow.senotes.whitespace.WhiteSpaceProgram;
 
-public class OutputState extends BasicState {
+public class OutputState extends State {
+	
+	private static final Logger logger = Logger.getLogger(OutputState.class);
+
 	
 	private Stack<Long> stack;
 	
-	public OutputState(Program program, Character[] chars, Stack<Long> stack) {
-		super(program, chars);
+	public OutputState(WhiteSpaceProgram program, CharacterSet characterSet, Stack<Long> stack) {
+		super(program, characterSet);
 		this.stack = stack;
 	}
 
@@ -25,10 +31,11 @@ public class OutputState extends BasicState {
 				getFiniteStateMachine();
 		
 		if (machine.isInScanMode()) return;
-		
 		logger.debug("Outputing value ["+stack.peek().intValue()+"] on top of stack "+stack+".");
 		
-		machine.getPrintWriter().write((char)stack.pop().intValue());
+		int value = stack.pop().intValue();
+		
+		machine.getPrintWriter().write((char)value);
 		machine.getPrintWriter().flush();
 
 	}
@@ -41,9 +48,10 @@ public class OutputState extends BasicState {
 		
 		if (machine.isInScanMode()) return;
 
-		Long value = stack.pop();
+		int value = stack.pop().intValue();
+		 
 
-		logger.debug(":Outputing value ["+value+"] popped from stack "+stack+".");
+		logger.debug("Outputing value ["+value+"] popped from stack "+stack+".");
 		
 		machine.getPrintWriter().print(value);
 		machine.getPrintWriter().flush();

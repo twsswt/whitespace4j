@@ -14,7 +14,6 @@ import uk.ac.glasgow.senotes.whitespace.flow.FlowLineFeedState;
 import uk.ac.glasgow.senotes.whitespace.flow.FlowSpaceState;
 import uk.ac.glasgow.senotes.whitespace.flow.FlowState;
 import uk.ac.glasgow.senotes.whitespace.flow.FlowTabState;
-import uk.ac.glasgow.senotes.whitespace.heap.Heap;
 import uk.ac.glasgow.senotes.whitespace.heap.HeapState;
 import uk.ac.glasgow.senotes.whitespace.imf.IMFState;
 import uk.ac.glasgow.senotes.whitespace.imf.IMFTabState;
@@ -31,48 +30,52 @@ public class FiniteStateMachine {
 	
 	private State imfState;
 	
+	private String currentInstruction;
+	
 	private BufferedReader bufferedReader;
 	
 	private PrintWriter printWriter;
-
-	
-	private FiniteStateMachine(){}
 	
 	public void initialise(
-		Program program,
+		WhiteSpaceProgram program,
 		Interpreter interpreter,
-		Character[] chars){
+		CharacterSet characterSet){
 		
-		Heap heap = new Heap();
+		Map<Long,Long> heap = new HashMap<Long,Long>();
 		Stack<Long> stack = new Stack<Long>();
 		Map<Long,Long> labels = new HashMap<Long,Long>();		
 		Stack<Long> subRoutines = new Stack<Long>();
+		resetCurrentInstruction();
 		
-		State stackState = new StackState(program, chars, stack,
-				new StackLineFeedState(program, chars, stack), 
-				new StackTabState(program, chars, stack));
+		State stackState = new StackState(
+			program, 
+			characterSet,
+			stack,
+			new StackLineFeedState(program, characterSet, stack), 
+			new StackTabState(program, characterSet, stack)
+		);
 		
-		State ioState = new IOState(program, chars, 
-				new InputState(program, chars, stack, heap),
-				new OutputState(program, chars, stack)); 
+		State ioState = new IOState(program, characterSet, 
+				new InputState(program, characterSet, stack, heap),
+				new OutputState(program, characterSet, stack)); 
 		
-		State flowState = new FlowState(program, chars, 
-				new FlowLineFeedState(program, chars, interpreter),
-				new FlowSpaceState(program, chars, labels, subRoutines),
-				new FlowTabState(program, chars, stack, labels, subRoutines)
+		State flowState = new FlowState(program, characterSet, 
+				new FlowLineFeedState(program, characterSet, interpreter),
+				new FlowSpaceState(program, characterSet, labels, subRoutines),
+				new FlowTabState(program, characterSet, stack, labels, subRoutines)
 				);
 		
-		State arithmeticState = StateFactory.createArithmetricState(program, chars, stack);
+		State arithmeticState = StateFactory.createArithmetricState(program, characterSet, stack);
 		
-		State heapState = new HeapState(program, chars, stack, heap);
+		State heapState = new HeapState(program, characterSet, stack, heap);
 		
 		State imfStateTab = new IMFTabState(program,
-				chars,
+				characterSet,
 				arithmeticState,
 				ioState,
 				heapState);
 		
-		imfState = new IMFState(program, chars, stackState, flowState, imfStateTab);	
+		imfState = new IMFState(program, characterSet, stackState, flowState, imfStateTab);	
 	}
 	
 	
@@ -103,7 +106,18 @@ public class FiniteStateMachine {
 	public State getImfState() {
 		return imfState;
 	}
-
+	
+	public void addTokenToCurrentInstruction(Character token) {
+		this.currentInstruction += token;
+	}
+	
+	public String getCurrentInstruction(){
+		return this.currentInstruction;
+	}
+	
+	public void resetCurrentInstruction(){
+		currentInstruction = "";
+	}
 	
 	/* Singleton pattern */
 	
