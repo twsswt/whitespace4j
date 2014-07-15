@@ -7,14 +7,21 @@
 	default="build"
 >
 	
+	<path id="pitest.classpath">
+
+		<fileset dir ="lib" includes="pitest*.jar,junit*.jar"/>
+
+	</path>
+	
 	
 	<path id="project.classpath">
 
 		<pathelement location="bin" />
-		<fileset dir ="lib" includes="*.jar"/>
+		<fileset dir ="lib" includes="*.jar" />
 
 	</path>
-		
+
+	<taskdef name="pitest" classname="org.pitest.ant.PitestTask" classpathref="pitest.classpath" />
 	
 	<target
 		name="clean"
@@ -90,6 +97,15 @@
 			
 	</target>
 	
+	<target name="mutationCoverage">
+	    <pitest
+	        pitClasspath="pitest.classpath"
+	        classPath="project.classpath"
+	    	verbose="false"
+	        targetClasses="uk.ac.glasgow.senotes.whitespace.*"
+	        reportDir="docs/"
+	        sourceDir="src/"/>
+	</target>
 	
 	<target
 		name="run"

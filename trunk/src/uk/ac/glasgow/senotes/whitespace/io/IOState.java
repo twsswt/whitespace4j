@@ -24,6 +24,7 @@ public class IOState extends State {
 
 	@Override
 	protected void doTabAction() throws InterpretWSException {
+		logger.debug("Instruction modification: input");
 		input.execute();
 	}
 	

@@ -25,14 +25,16 @@ public class InputState extends State{
 
 	@Override
 	protected void doSpaceAction() throws InterpretWSException {
-		
+				
 		FiniteStateMachine machine = 
 			getFiniteStateMachine();
 		
 		try {
 			if(machine.isInScanMode())return;
 			char input = (char)machine.getBufferedReader().read();
-			heap.put((long)input, stack.peek());
+			logger.debug("Placing char value ["+input+"] onto heap at position ["+stack.peek()+"].");
+
+			heap.put(stack.peek(),(long)input);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
@@ -47,7 +49,9 @@ public class InputState extends State{
 		try {
 			if(machine.isInScanMode())return;
 			Long input = Long.parseLong(machine.getBufferedReader().readLine());
-			heap.put(input, stack.peek());
+			logger.debug("Placing value ["+input+"] onto heap at position ["+stack.peek()+"].");
+
+			heap.put(stack.peek(),input);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

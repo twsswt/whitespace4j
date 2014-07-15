@@ -13,6 +13,9 @@
 
 		<dependency org="junit" name="junit" conf="default" rev="4.8.2"/>
 		
+		<dependency org="org.pitest" name="pitest" rev="1.0.0"/>
+		
+		<dependency org="org.pitest" name="pitest-ant" rev="1.0.0"/>	
 	
 	</dependencies>
 
