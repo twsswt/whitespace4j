@@ -62,19 +62,37 @@ public abstract class State {
 		if (signed){
 			Character sign = getNextProgramToken();
 			finiteStateMachine.addTokenToCurrentInstruction(sign);
-			if (sign==tab) sign_mult = -1;
-			else if (sign==space) sign_mult = 1;
-			else throw new InterpretWSException(program, this);		
+
+			if (sign == null)
+				throw new InterpretWSException(program, this);
+			else if (sign.equals(tab))
+				sign_mult = -1;
+			else if (sign.equals(space))
+				sign_mult = 1;
+			else 
+				throw new InterpretWSException(program, this);		
 		}
 		
 		Character c = getNextProgramToken();
-		while(c != lineFeed){
+		if (c == null)
+			throw new InterpretWSException(program, this);
+		
+		while(!c.equals(lineFeed)){
 			finiteStateMachine.addTokenToCurrentInstruction(c);
+			
 			result *=2;
-			if (c==tab) result++;
-			else if (c==space);
-			else throw new InterpretWSException(program, this);
+			
+			if (c.equals(tab))
+				result++;
+			else if (c.equals(space))
+				;//do nothing.
+			else
+				throw new InterpretWSException(program, this);
+
 			c = getNextProgramToken();
+			if (c == null)
+				throw new InterpretWSException(program, this);
+
 		}
 		return result*sign_mult;
 	}
@@ -82,7 +100,12 @@ public abstract class State {
 	private Character getNextProgramToken(){
 		Character token = program.getNextToken();
 		
-		while(!(token == null || token.equals(tab) || token.equals(lineFeed) || token.equals(space)))
+		while(!
+			(token == null || 
+			 token.equals(tab) || 
+			 token.equals(lineFeed) ||
+			 token.equals(space))
+			 )
 			token = program.getNextToken();
 		
 		return token;
