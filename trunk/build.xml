@@ -185,17 +185,17 @@
 		name="test"
 	>
 		
-		<junit>
+		<junit printsummary="true">
 			<formatter type="xml"/>
 			<classpath
 				 refid="project.classpath"
 			/>
 
 			<test
-				name="uk.ac.glasgow.whitespace4j.test.InterpreterTestCase"
+				name="uk.ac.glasgow.senotes.whitespace.tests.InterpreterTestCase"
 			/>
 			<test
-				name="uk.ac.glasgow.whitespace4j.arithmetic.test.ArithmeticStateTestCase"
+				name="uk.ac.glasgow.senotes.whitespace.arithmetic.test.ArithmeticStateTestCase"
 			/>
 			
 		</junit>

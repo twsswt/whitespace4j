@@ -23,7 +23,7 @@ import uk.ac.glasgow.senotes.whitespace.State;
 import uk.ac.glasgow.senotes.whitespace.factory.StateFactory;
 
 @RunWith(Parameterized.class)
-public class ArithmetricStateTestCase {
+public class ArithmeticStateTestCase {
 	
 	@BeforeClass
 	public static void setUpClass(){
@@ -53,7 +53,7 @@ public class ArithmetricStateTestCase {
 	private Long[] stackStartValues;
 	private Long[] stackEndValues;
 	
-	public ArithmetricStateTestCase(
+	public ArithmeticStateTestCase(
 		String programSource, Long[] stackStartValues, Long[] stackEndValues){
 		this.programSource = programSource;
 		this.stackStartValues = stackStartValues;

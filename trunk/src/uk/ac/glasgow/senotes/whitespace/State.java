@@ -32,10 +32,15 @@ public abstract class State {
 		Boolean scanMode = 
 			finiteStateMachine.isInScanMode();
 		
-		if (token==space) doSpaceAction();
-		else if (token==tab) doTabAction();
-		else if (token==lineFeed) doLineFeedAction();
-		else if (token==null && scanMode) return;
+		if (token == null)
+			if(scanMode)
+				return;
+			else 
+				throw new InterpretWSException(program, this);			
+		
+		else if (token.equals(space)) doSpaceAction();
+		else if (token.equals(tab)) doTabAction();
+		else if (token.equals(lineFeed)) doLineFeedAction();
 		else
 			throw new InterpretWSException(program, this);			
 	}
@@ -77,7 +82,7 @@ public abstract class State {
 	private Character getNextProgramToken(){
 		Character token = program.getNextToken();
 		
-		while(!(token==tab || token==lineFeed || token==space || token==null))
+		while(!(token == null || token.equals(tab) || token.equals(lineFeed) || token.equals(space)))
 			token = program.getNextToken();
 		
 		return token;
