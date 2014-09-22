@@ -74,10 +74,10 @@ public class Main {
 		BufferedReader buf = 
 			new BufferedReader(new InputStreamReader(fis));
 			
-		String program  ="";
+		StringBuffer program  = new StringBuffer();
 				
 		while (buf.ready())
-			program+=(char)buf.read();
+			program.append((char)buf.read());
 		
 		try {
 			buf.close();
@@ -85,6 +85,6 @@ public class Main {
 			logger.error("Couldn't close buffer resource ["+buf+"]",e);
 		}
 				
-		return program;				
+		return program.toString();				
 	}
 }

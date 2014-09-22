@@ -38,9 +38,14 @@ public class ArithmeticTabState extends State{
 		Long e2 = stack.pop();
 		
 		switch (op) {
-			case division: stack.push(e2/e1);
-			case modulo:  stack.push(e2%e1);
-			default: throw new InterpretWSException(program, this);
+			case division:
+				stack.push(e2/e1);
+				break;
+			case modulo: 
+				stack.push(e2%e1);
+				break;
+			default: 
+				throw new InterpretWSException(program, this);
 		}
 	}
 

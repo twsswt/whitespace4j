@@ -42,7 +42,10 @@ public class StackTabState extends State{
 		
 		logger.debug("Copying ["+index+"th] element of stack "+stack+".");
 
-		Long n = new Long(stack.elementAt(index.intValue()));
-		stack.push(n);	
+		Long valueToCopy = stack.elementAt(index.intValue());
+		
+		Long copiedValue = Long.valueOf(valueToCopy);
+		
+		stack.push(copiedValue);	
 	}
 }
