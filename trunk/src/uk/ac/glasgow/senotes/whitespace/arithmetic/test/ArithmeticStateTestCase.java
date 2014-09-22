@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Stack;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,10 +53,10 @@ public class ArithmeticStateTestCase {
 	private Long[] stackEndValues;
 	
 	public ArithmeticStateTestCase(
-		String programSource, Long[] stackStartValues, Long[] stackEndValues){
+		final String programSource, Long[] stackStartValues, Long[] stackEndValues){
 		this.programSource = programSource;
-		this.stackStartValues = stackStartValues;
-		this.stackEndValues = stackEndValues;
+		this.stackStartValues = Arrays.copyOf(stackStartValues, stackStartValues.length);
+		this.stackEndValues =   Arrays.copyOf(stackEndValues, stackEndValues.length);;
 	}
 
 	

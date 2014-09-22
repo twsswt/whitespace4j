@@ -29,9 +29,7 @@ public class StackLineFeedState extends State {
 		if (getFiniteStateMachine().isInScanMode()) return;
 		logger.debug("Copying top stack element "+stack+".");
 		stack.push(
-				new Long(
-						stack.peek()
-						));
+				Long.valueOf(stack.peek()));
 		logger.debug("Copied top stack element "+stack+".");
 	}
 
