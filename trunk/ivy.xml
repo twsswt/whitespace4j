@@ -11,7 +11,7 @@
 	
 		<dependency org="log4j" name="log4j" conf="default" rev="1.2.17"/>
 
-		<dependency org="junit" name="junit" conf="default" rev="4.8.2"/>
+		<dependency org="junit" name="junit" conf="default" rev="4.10"/>
 		
 		<dependency org="org.pitest" name="pitest" rev="1.0.0"/>
 		
