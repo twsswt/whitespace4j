@@ -149,9 +149,13 @@
 			output="xml"
 			outputfile="findbugs-report.xml"
 		>
+
 			<auxClasspath refid="project.classpath" />
+
 			<sourcePath path="src/" />
+
 			<class location="bin/" />
+
 		</findbugs>
 
 	</target>
