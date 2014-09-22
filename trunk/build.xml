@@ -147,31 +147,12 @@
 		<findbugs
 			classpathref="findbugs.classpath"
 			output="xml"
-			outputfile="finbugs-report.xml"
+			outputfile="findbugs-report.xml"
 		>
 			<auxClasspath refid="project.classpath" />
 			<sourcePath path="src/" />
 			<class location="bin/" />
 		</findbugs>
-
-		<!--java
-			classname="edu.umd.cs.findbugs.FindBugs2"
-		>
-
-			<arg value="-sortByClass"/>
-			<arg value="-timestampNow"/>
-			<arg value="-html"/>
-			<arg value="-output"/>
-			<arg value="findbugs-report.html"/>
-			<arg value="-exitcode"/>
-			<arg value="-auxclasspath"/>
-			<arg value="lib/junit-4.10.jar"/>
-			<arg value="-sourcepath"/>
-			<arg value="src/"/>
-			<arg value="bin/"/>
-			<classpath refid="project.classpath"/>
-	
-		</java-->
 
 	</target>
 
