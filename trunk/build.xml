@@ -12,7 +12,14 @@
 		<fileset dir ="lib" includes="pitest*.jar,junit*.jar"/>
 
 	</path>
-	
+
+
+	<path id="findbugs.classpath">
+
+		<fileset dir ="lib" includes="*.jar"/>
+
+	</path>
+
 	
 	<path id="project.classpath">
 
@@ -21,7 +28,6 @@
 
 	</path>
 
-	<taskdef name="pitest" classname="org.pitest.ant.PitestTask" classpathref="pitest.classpath" />
 	
 	<target
 		name="clean"
@@ -77,6 +83,7 @@
 		<javac
 			srcdir="src"
 			destdir="bin"
+			debug="true"
 			debuglevel="lines,vars,source"
 			classpathref="project.classpath"
 		/>
@@ -96,16 +103,77 @@
 		/>
 			
 	</target>
+
 	
-	<target name="mutationCoverage">
-	    <pitest
-	        pitClasspath="pitest.classpath"
-	        classPath="project.classpath"
-	    	verbose="false"
-	        targetClasses="uk.ac.glasgow.senotes.whitespace.*"
-	        reportDir="docs/"
-	        sourceDir="src/"/>
+	<target name="mutationCoverage" depends="compile">
+
+		<taskdef
+			name="pitest"
+			classname="org.pitest.ant.PitestTask"
+			classpathref="pitest.classpath"
+		/>
+
+		<unzip src="lib/pitest-1.0.0.jar" dest=".">
+			<patternset><include name="templates/**" /></patternset>
+		</unzip>
+
+		<pitest
+			pitClasspath="pitest.classpath"
+			classPath="project.classpath"
+			verbose="false"
+			timeStampedReports="false"
+			targetClasses="uk.ac.glasgow.senotes.whitespace.*"
+			reportDir="docs/"
+			sourceDir="src/"
+		/>
+
 	</target>
+
+
+
+	<target
+		name="findbugs"
+		depends="compile"
+	>
+
+		<taskdef
+			name="findbugs"
+			classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+			classpathref="findbugs.classpath"
+		/>
+
+
+		<findbugs
+			classpathref="findbugs.classpath"
+			output="xml"
+			outputfile="finbugs-report.xml"
+		>
+			<auxClasspath refid="project.classpath" />
+			<sourcePath path="src/" />
+			<class location="bin/" />
+		</findbugs>
+
+		<!--java
+			classname="edu.umd.cs.findbugs.FindBugs2"
+		>
+
+			<arg value="-sortByClass"/>
+			<arg value="-timestampNow"/>
+			<arg value="-html"/>
+			<arg value="-output"/>
+			<arg value="findbugs-report.html"/>
+			<arg value="-exitcode"/>
+			<arg value="-auxclasspath"/>
+			<arg value="lib/junit-4.10.jar"/>
+			<arg value="-sourcepath"/>
+			<arg value="src/"/>
+			<arg value="bin/"/>
+			<classpath refid="project.classpath"/>
+	
+		</java-->
+
+	</target>
+
 	
 	<target
 		name="run"
