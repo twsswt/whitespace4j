@@ -56,7 +56,7 @@ public class ArithmeticStateTestCase {
 		final String programSource, Long[] stackStartValues, Long[] stackEndValues){
 		this.programSource = programSource;
 		this.stackStartValues = Arrays.copyOf(stackStartValues, stackStartValues.length);
-		this.stackEndValues =   Arrays.copyOf(stackEndValues, stackEndValues.length);;
+		this.stackEndValues =   Arrays.copyOf(stackEndValues, stackEndValues.length);
 	}
 
 	
